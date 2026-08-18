@@ -1,0 +1,22 @@
+.page > text { display: block; }
+
+.week {
+  margin-top: 84rpx;
+  padding-bottom: 60rpx;
+  display: flex;
+  border-bottom: 2rpx solid #171816;
+}
+
+.day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 18rpx; color: #74766f; }
+.day text { font-size: 19rpx; }
+.day strong { font-size: 27rpx; }
+.day .day-count { width: 44rpx; height: 44rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #f0f1ec; font-size: 20rpx; }
+.day.full { color: #178b4d; }
+.day.full .day-count { background: #178b4d; color: #ffffff; }
+.today-list { margin-top: 68rpx; }
+.section-label { font-size: 25rpx; font-weight: 600; }
+.record { min-height: 112rpx; display: flex; align-items: center; border-bottom: 2rpx solid #e3e4de; font-size: 28rpx; }
+.record > text { flex: 1; margin-left: 24rpx; }
+.record .record-status { color: #74766f; font-size: 23rpx; }
+.dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #d6d8d1; }
+.dot.done { background: #178b4d; }

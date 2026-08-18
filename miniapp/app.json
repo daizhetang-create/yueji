@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/today/index",
+    "pages/history/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "约己",
+    "backgroundColor": "#f5f5f1",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#94978f",
+    "selectedColor": "#171816",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/today/index", "text": "今天" },
+      { "pagePath": "pages/history/index", "text": "记录" },
+      { "pagePath": "pages/profile/index", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

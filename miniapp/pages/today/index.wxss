@@ -1,0 +1,91 @@
+.heading text { display: block; }
+
+.task-row {
+  min-height: 176rpx;
+  margin: 0;
+  padding: 36rpx 0;
+  display: flex;
+  align-items: center;
+  border-radius: 0;
+  border-bottom: 2rpx solid #e3e4de;
+  background: transparent;
+  text-align: left;
+  line-height: 1;
+}
+
+.check {
+  width: 52rpx;
+  height: 52rpx;
+  flex: 0 0 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3rpx solid #a9aca4;
+  border-radius: 50%;
+  font-size: 30rpx;
+}
+
+.task-copy { flex: 1; margin-left: 26rpx; }
+.task-copy text { display: block; }
+.task-title { font-size: 34rpx; font-weight: 600; }
+.task-detail { margin-top: 18rpx; color: #74766f; font-size: 23rpx; }
+.task-mark { width: 50rpx; color: #8b8e86; font-size: 40rpx; text-align: center; }
+.task-row.done .check { border-color: #178b4d; background: #178b4d; color: #ffffff; }
+.task-row.done .task-title { color: #8b8e86; text-decoration: line-through; }
+.task-row.done .task-mark { color: #178b4d; }
+
+.add-button {
+  min-height: 96rpx;
+  margin: 28rpx 0 0;
+  padding: 0;
+  background: transparent;
+  color: #171816;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: left;
+}
+
+.note {
+  display: block;
+  width: 520rpx;
+  margin-top: 70rpx;
+  color: #989a93;
+  font-size: 23rpx;
+  line-height: 1.7;
+}
+
+.mask {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(16, 17, 15, .32);
+}
+
+.sheet {
+  width: 100%;
+  padding: 64rpx 48rpx calc(44rpx + env(safe-area-inset-bottom));
+  border-radius: 36rpx 36rpx 0 0;
+  background: #ffffff;
+}
+
+.sheet text { display: block; }
+.sheet-title { margin-bottom: 54rpx; font-size: 58rpx; font-weight: 700; letter-spacing: -4rpx; }
+.preset-list { border-top: 2rpx solid #171816; }
+
+.preset-list button {
+  min-height: 142rpx;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0;
+  border-bottom: 2rpx solid #e3e4de;
+  background: transparent;
+  font-size: 30rpx;
+  text-align: left;
+}
+
+.preset-list .preset-detail { display: block; margin-top: 12rpx; color: #74766f; font-size: 22rpx; }

@@ -1,0 +1,22 @@
+<view class="page">
+  <text class="eyebrow">账户与连接</text>
+  <text class="title">我的</text>
+
+  <view class="settings">
+    <button bindtap="bindPayment" loading="{{paying}}">
+      <text>微信支付</text>
+      <text class="setting-value">支付 7 天承诺金</text>
+      <text>›</text>
+    </button>
+    <button bindtap="showSync">
+      <text>完成判定</text>
+      <text class="setting-value">一键确认</text>
+      <text>›</text>
+    </button>
+  </view>
+
+  <view class="about">
+    <strong>约己</strong>
+    <text>把目标缩成今天的一件事。做完就结束，不做多余的事。</text>
+  </view>
+</view>

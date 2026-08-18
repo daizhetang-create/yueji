@@ -1,0 +1,45 @@
+page {
+  min-height: 100%;
+  background: #ffffff;
+  color: #171816;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+}
+
+button::after { border: 0; }
+
+.page {
+  padding: 68rpx 48rpx 120rpx;
+}
+
+.eyebrow {
+  margin: 0 0 14rpx;
+  color: #74766f;
+  font-size: 24rpx;
+}
+
+.title {
+  margin: 0;
+  font-size: 96rpx;
+  font-weight: 700;
+  letter-spacing: -8rpx;
+  line-height: 1;
+}
+
+.summary {
+  display: block;
+  margin-top: 32rpx;
+  color: #74766f;
+  font-size: 28rpx;
+}
+
+.rule-list {
+  margin-top: 88rpx;
+  border-top: 2rpx solid #171816;
+}
+
+.plain-row {
+  min-height: 128rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: 2rpx solid #e3e4de;
+}

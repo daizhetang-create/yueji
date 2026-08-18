@@ -1,0 +1,12 @@
+{
+  "appid": "请替换为已认证的小程序AppID",
+  "projectname": "yueji",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "minified": true,
+    "urlCheck": true
+  }
+}

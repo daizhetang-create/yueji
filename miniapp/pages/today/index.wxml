@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="heading">
+    <text class="eyebrow">{{dateText}}</text>
+    <text class="title">今天</text>
+    <text class="summary">{{completed}} / {{tasks.length}} 已完成</text>
+  </view>
+
+  <view class="rule-list">
+    <button class="task-row {{item.done ? 'done' : ''}}" wx:for="{{tasks}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleTask">
+      <view class="check">{{item.done ? '✓' : ''}}</view>
+      <view class="task-copy">
+        <text class="task-title">{{item.title}}</text>
+        <text class="task-detail">{{item.detail}} · 承诺额 ¥{{item.stake}}</text>
+      </view>
+      <text class="task-mark">{{item.type === 'meditation' ? '○' : item.type === 'workout' ? '↗' : '☾'}}</text>
+    </button>
+  </view>
+
+  <button class="add-button" bindtap="openPresets">＋ 加一件事</button>
+  <text class="note">做完后点一下。原生 App 上线后由健康数据自动完成。</text>
+</view>
+
+<view class="mask" wx:if="{{showPresets}}" bindtap="closePresets">
+  <view class="sheet" catchtap="stopPropagation">
+    <text class="eyebrow">不用填写</text>
+    <text class="sheet-title">加一件事</text>
+    <view class="preset-list">
+      <button wx:for="{{presets}}" wx:key="type" data-index="{{index}}" bindtap="addPreset">
+        <view>
+          <text>{{item.title}}</text>
+          <text class="preset-detail">{{item.detail}} · ¥{{item.stake}}</text>
+        </view>
+        <text>＋</text>
+      </button>
+    </view>
+  </view>
+</view>

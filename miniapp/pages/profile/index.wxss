@@ -1,0 +1,8 @@
+.page > text { display: block; }
+.settings { margin-top: 88rpx; border-top: 2rpx solid #171816; }
+.settings button { min-height: 128rpx; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr auto 30rpx; gap: 18rpx; align-items: center; border-radius: 0; border-bottom: 2rpx solid #e3e4de; background: transparent; font-size: 28rpx; text-align: left; }
+.settings .setting-value { color: #74766f; font-size: 23rpx; }
+.settings button > text:last-child { color: #afb1aa; font-size: 38rpx; text-align: right; }
+.about { margin-top: 100rpx; padding-right: 100rpx; }
+.about strong { display: block; margin-bottom: 24rpx; font-size: 34rpx; }
+.about text { color: #74766f; font-size: 25rpx; line-height: 1.75; }
