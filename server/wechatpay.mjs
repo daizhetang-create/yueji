@@ -109,7 +109,7 @@ export async function refundDeposit({ order, refundFen }) {
     out_trade_no: order.outTradeNo,
     out_refund_no: outRefundNo,
     reason: '约己承诺周期结算',
-    notify_url: process.env.WECHAT_NOTIFY_URL,
+    notify_url: process.env.WECHAT_REFUND_NOTIFY_URL || process.env.WECHAT_NOTIFY_URL,
     amount: { refund: refundFen, total: order.totalFen, currency: 'CNY' },
   })
 }

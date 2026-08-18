@@ -30,3 +30,17 @@ export function markOrderPaid(outTradeNo, transaction) {
 export function getOrder(outTradeNo) {
   return orders.get(outTradeNo)
 }
+
+export function markOrderRefunded(outTradeNo, refund) {
+  const order = orders.get(outTradeNo)
+  if (!order) return null
+  const refunded = {
+    ...order,
+    state: 'REFUNDED',
+    refundId: refund.refund_id,
+    refundFen: refund.amount?.refund,
+    refundedAt: refund.success_time,
+  }
+  orders.set(outTradeNo, refunded)
+  return refunded
+}

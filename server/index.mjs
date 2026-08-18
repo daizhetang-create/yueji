@@ -1,6 +1,6 @@
 import { createServer } from 'node:http'
 import { randomBytes } from 'node:crypto'
-import { getCommitment, getOrder, markOrderPaid, rememberOrder } from './commitments.mjs'
+import { getCommitment, getOrder, markOrderPaid, markOrderRefunded, rememberOrder } from './commitments.mjs'
 import { createDepositPayment, refundDeposit, verifyAndDecryptNotification } from './wechatpay.mjs'
 
 const port = Number(process.env.PORT || 8787)
@@ -77,6 +77,13 @@ const server = createServer(async (request, response) => {
       const rawBody = await readBody(request)
       const transaction = verifyAndDecryptNotification(rawBody, request.headers)
       if (transaction.trade_state === 'SUCCESS') markOrderPaid(transaction.out_trade_no, transaction)
+      return json(response, 200, { code: 'SUCCESS', message: '成功' })
+    }
+
+    if (request.method === 'POST' && request.url === '/api/wechat/refund/notify') {
+      const rawBody = await readBody(request)
+      const refund = verifyAndDecryptNotification(rawBody, request.headers)
+      if (refund.refund_status === 'SUCCESS') markOrderRefunded(refund.out_trade_no, refund)
       return json(response, 200, { code: 'SUCCESS', message: '成功' })
     }
 
