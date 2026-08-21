@@ -2,7 +2,8 @@
 
 把目标缩成今天的一件事。做完就结束。
 
-- 公开网站：<https://daizhetang-create.github.io/yueji/>
+- 主站（Cloudflare）：<https://yueji-e39.pages.dev/>
+- 备用站（GitHub Pages）：<https://daizhetang-create.github.io/yueji/>
 - GitHub：<https://github.com/daizhetang-create/yueji>
 
 ## 当前已经具备
@@ -50,7 +51,7 @@ npm run check
 npm run publish -- -Message "说明这次更新"
 ```
 
-该命令会依次检查、构建网站、提交当前版本、推送 GitHub。GitHub Pages 监听 `main/docs`，推送后自动更新公开网址。
+该命令会依次检查、构建网站、提交并推送 GitHub、更新 GitHub Pages，再把根路径版本发布到 Cloudflare Pages。两个网址同步完成，不需要分别上传。
 
 ## 文档
 

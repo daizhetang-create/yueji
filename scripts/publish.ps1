@@ -32,5 +32,10 @@ if ($staged) {
 git push origin main
 if ($LASTEXITCODE -ne 0) { throw 'GitHub push failed.' }
 
-Write-Output 'GitHub push complete. GitHub Pages will publish main/docs automatically.'
-Write-Output 'Live URL: https://daizhetang-create.github.io/yueji/'
+$commitHash = (git rev-parse HEAD).Trim()
+npx --yes wrangler@4.125.0 pages deploy dist --project-name yueji --branch main --commit-hash $commitHash --commit-message $Message
+if ($LASTEXITCODE -ne 0) { throw 'Cloudflare Pages deployment failed.' }
+
+Write-Output 'GitHub push and Cloudflare deployment complete.'
+Write-Output 'Cloudflare: https://yueji-e39.pages.dev/'
+Write-Output 'GitHub Pages: https://daizhetang-create.github.io/yueji/'
