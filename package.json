@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "build:pages": "vite build --base=/yueji/",
+    "build:pages": "vite build --base=/yueji/ --outDir=docs",
     "preview": "vite preview --host 0.0.0.0",
-    "deploy:pages": "npm run build:pages && gh-pages -d dist",
+    "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish.ps1",
     "server": "node --env-file-if-exists=.env server/index.mjs",
     "test": "node --test server/*.test.mjs",
     "check": "npm run build && npm test"
@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
-    "gh-pages": "^6.3.0",
     "vite": "^6.0.5"
   }
 }

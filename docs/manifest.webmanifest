@@ -1,0 +1,13 @@
+{
+  "name": "约己",
+  "short_name": "约己",
+  "description": "把目标缩成今天的一件事，做完就结束。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "./yueji-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

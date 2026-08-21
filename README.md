@@ -20,7 +20,8 @@
 src/        网页 / PWA
 miniapp/    原生微信小程序
 server/     微信登录、支付与退款服务
-docs/       产品、支付、自动打卡与研究文档
+docs/       云端网站构建产物（GitHub Pages 自动读取）
+planning/   产品、支付、自动打卡与研究文档
 ```
 
 ## 本地运行
@@ -43,9 +44,17 @@ npm run server
 npm run check
 ```
 
+确认发布新版本后：
+
+```powershell
+npm run publish -- -Message "说明这次更新"
+```
+
+该命令会依次检查、构建网站、提交当前版本、推送 GitHub。GitHub Pages 监听 `main/docs`，推送后自动更新公开网址。
+
 ## 文档
 
-- [今天能完成什么，以及后续上架顺序](./docs/01-产品与上线路线.md)
-- [全球竞品与学术证据](./docs/02-全球竞品与学术证据.md)
-- [微信支付承诺金接入](./docs/03-微信支付接入.md)
-- [原生 App 自动打卡](./docs/04-自动打卡与原生App.md)
+- [今天能完成什么，以及后续上架顺序](./planning/01-产品与上线路线.md)
+- [全球竞品与学术证据](./planning/02-全球竞品与学术证据.md)
+- [微信支付承诺金接入](./planning/03-微信支付接入.md)
+- [原生 App 自动打卡](./planning/04-自动打卡与原生App.md)
