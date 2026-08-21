@@ -1,16 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   Activity,
+  BarChart3,
   CalendarDays,
   Check,
   ChevronRight,
-  CircleUserRound,
+  Clock3,
   Dumbbell,
+  House,
   Moon,
   Plus,
   RefreshCw,
   Smartphone,
   Trash2,
+  UserRound,
   WalletCards,
   X,
 } from 'lucide-react'
@@ -43,9 +46,9 @@ const PRESETS = [
 ]
 
 const NAV_ITEMS = [
-  { id: 'today', label: '今天', icon: Check },
-  { id: 'history', label: '记录', icon: CalendarDays },
-  { id: 'profile', label: '我的', icon: CircleUserRound },
+  { id: 'today', label: '今天', icon: House },
+  { id: 'history', label: '记录', icon: BarChart3 },
+  { id: 'profile', label: '我的', icon: UserRound },
 ]
 
 function dateKey(date = new Date()) {
@@ -64,58 +67,115 @@ function loadTasks() {
   }
 }
 
-function TaskGlyph({ type, size = 20 }) {
-  if (type === 'workout') return <Dumbbell size={size} strokeWidth={1.8} />
-  if (type === 'sleep') return <Moon size={size} strokeWidth={1.8} />
-  return <Activity size={size} strokeWidth={1.8} />
+function greeting() {
+  const hour = new Date().getHours()
+  if (hour < 6) return '夜深了'
+  if (hour < 11) return '早上好'
+  if (hour < 14) return '中午好'
+  if (hour < 18) return '下午好'
+  return '晚上好'
 }
 
-function Today({ tasks, onToggle, onAdd }) {
+function TaskGlyph({ type, size = 21 }) {
+  if (type === 'workout') return <Dumbbell size={size} strokeWidth={2} />
+  if (type === 'sleep') return <Moon size={size} strokeWidth={2} />
+  return <Activity size={size} strokeWidth={2} />
+}
+
+function AppHeader({ dateText, onProfile }) {
+  return (
+    <header className="app-header">
+      <div>
+        <p>{dateText}</p>
+        <h1>{greeting()}，今天</h1>
+      </div>
+      <button className="profile-button" type="button" aria-label="打开我的" onClick={onProfile}>
+        <span>约</span>
+      </button>
+    </header>
+  )
+}
+
+function ProgressCard({ completed, total }) {
+  const progress = total ? Math.round((completed / total) * 100) : 0
+  const remaining = Math.max(total - completed, 0)
+  const finished = total > 0 && remaining === 0
+
+  return (
+    <section className={`progress-card ${finished ? 'is-finished' : ''}`} aria-label={`今日完成 ${completed} 项，共 ${total} 项`}>
+      <div className="progress-copy">
+        <span>今日进度</span>
+        <strong>{finished ? '全部完成' : `还有 ${remaining} 项`}</strong>
+        <small>{finished ? '今天可以安心收工了' : '只处理今天，不追赶昨天'}</small>
+      </div>
+      <div className="progress-ring" style={{ '--progress': `${progress}%` }} aria-hidden="true">
+        <div>
+          <strong>{completed}</strong>
+          <span>/{total}</span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function TaskCard({ task, done, onToggle }) {
+  return (
+    <button
+      className={`task-card tone-${task.type} ${done ? 'is-done' : ''}`}
+      type="button"
+      aria-pressed={done}
+      onClick={onToggle}
+    >
+      <span className="task-icon" aria-hidden="true"><TaskGlyph type={task.type} /></span>
+      <span className="task-content">
+        <strong>{task.title}</strong>
+        <span className="task-meta">
+          <span><Clock3 size={13} />{task.detail}</span>
+          <span>承诺 ¥{task.stake.toFixed(1)}</span>
+        </span>
+      </span>
+      <span className="complete-button" aria-hidden="true">
+        {done ? <Check size={19} strokeWidth={2.8} /> : null}
+      </span>
+    </button>
+  )
+}
+
+function Today({ tasks, onToggle, onAdd, onProfile }) {
   const today = dateKey()
   const completed = tasks.filter((task) => task.history?.[today]).length
   const now = new Date()
   const dateText = new Intl.DateTimeFormat('zh-CN', {
     month: 'long',
     day: 'numeric',
-    weekday: 'long',
-  }).format(now)
+    weekday: 'short',
+  }).format(now).replace('周', ' · 周')
 
   return (
-    <main id="main-content" className="page page-today">
-      <header className="page-heading">
-        <p>{dateText}</p>
-        <h1>今天</h1>
-        <span>{completed === tasks.length ? '今天的事都做完了。' : `${completed} / ${tasks.length} 已完成`}</span>
-      </header>
+    <main id="main-content" className="app-page home-page">
+      <AppHeader dateText={dateText} onProfile={onProfile} />
+      <ProgressCard completed={completed} total={tasks.length} />
 
-      <section className="task-list" aria-label="今日约定">
-        {tasks.map((task) => {
-          const done = Boolean(task.history?.[today])
-          return (
-            <button
-              className={`task-row ${done ? 'is-done' : ''}`}
+      <section className="task-section" aria-labelledby="today-tasks-title">
+        <div className="section-heading">
+          <h2 id="today-tasks-title">今日约定</h2>
+          <span>{tasks.length} 项</span>
+        </div>
+        <div className="task-stack">
+          {tasks.map((task) => (
+            <TaskCard
               key={task.id}
-              type="button"
-              aria-pressed={done}
-              onClick={() => onToggle(task.id)}
-            >
-              <span className="task-check" aria-hidden="true">{done && <Check size={17} strokeWidth={2.6} />}</span>
-              <span className="task-copy">
-                <strong>{task.title}</strong>
-                <small>{task.detail} · 承诺额 ¥{task.stake.toFixed(1)}</small>
-              </span>
-              <span className="task-glyph" aria-hidden="true"><TaskGlyph type={task.type} /></span>
-            </button>
-          )
-        })}
+              task={task}
+              done={Boolean(task.history?.[today])}
+              onToggle={() => onToggle(task.id)}
+            />
+          ))}
+        </div>
       </section>
 
-      <button className="quiet-add" type="button" onClick={onAdd}>
-        <Plus size={18} />
-        加一件事
+      <button className="floating-add" type="button" aria-label="添加约定" onClick={onAdd}>
+        <Plus size={24} strokeWidth={2.4} />
       </button>
-
-      <p className="one-tap-note">做完后点一下。App 上线后由健康数据自动完成。</p>
     </main>
   )
 }
@@ -125,46 +185,81 @@ function History({ tasks }) {
     const date = new Date()
     date.setDate(date.getDate() - (6 - index))
     const key = dateKey(date)
+    const completed = tasks.filter((task) => task.history?.[key]).length
     return {
       key,
-      weekday: new Intl.DateTimeFormat('zh-CN', { weekday: 'short' }).format(date),
+      weekday: new Intl.DateTimeFormat('zh-CN', { weekday: 'short' }).format(date).replace('周', ''),
       day: date.getDate(),
-      completed: tasks.filter((task) => task.history?.[key]).length,
+      completed,
+      full: tasks.length > 0 && completed === tasks.length,
+      today: index === 6,
     }
   }), [tasks])
 
-  const completedDays = days.filter((day) => day.completed === tasks.length && tasks.length > 0).length
+  const completedDays = days.filter((day) => day.full).length
+  const completedTasks = days.reduce((sum, day) => sum + day.completed, 0)
+  const possible = days.length * tasks.length
+  const rate = possible ? Math.round((completedTasks / possible) * 100) : 0
 
   return (
-    <main id="main-content" className="page">
-      <header className="page-heading compact-heading">
+    <main id="main-content" className="app-page history-page">
+      <header className="simple-header">
         <p>最近 7 天</p>
         <h1>记录</h1>
-        <span>{completedDays} 天全部完成</span>
       </header>
 
-      <section className="week-strip" aria-label="最近七天完成记录">
-        {days.map((day) => (
-          <div className={`day-cell ${day.completed === tasks.length && tasks.length ? 'is-complete' : ''}`} key={day.key}>
-            <small>{day.weekday}</small>
-            <strong>{day.day}</strong>
-            <span aria-label={`${day.completed}项完成`}>{day.completed || '·'}</span>
-          </div>
-        ))}
+      <section className="stat-grid" aria-label="最近七天统计">
+        <article className="stat-card stat-primary">
+          <span>完成率</span>
+          <strong>{rate}<small>%</small></strong>
+          <p>{completedTasks} 次完成</p>
+        </article>
+        <article className="stat-card">
+          <span>完整天数</span>
+          <strong>{completedDays}<small>天</small></strong>
+          <p>两项都完成</p>
+        </article>
       </section>
 
-      <section className="plain-section" aria-labelledby="record-title">
-        <h2 id="record-title">今天</h2>
-        {tasks.map((task) => {
-          const done = Boolean(task.history?.[dateKey()])
-          return (
-            <div className="record-row" key={task.id}>
-              <span className={`record-dot ${done ? 'is-done' : ''}`} />
-              <span>{task.title}</span>
-              <small>{done ? '完成' : '未完成'}</small>
+      <section className="calendar-card" aria-labelledby="week-title">
+        <div className="card-heading">
+          <div>
+            <h2 id="week-title">本周</h2>
+            <p>{new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long' }).format(new Date())}</p>
+          </div>
+          <CalendarDays size={20} aria-hidden="true" />
+        </div>
+        <div className="week-row">
+          {days.map((day) => (
+            <div className={`day-pill ${day.full ? 'is-complete' : ''} ${day.today ? 'is-today' : ''}`} key={day.key}>
+              <small>{day.weekday}</small>
+              <strong>{day.day}</strong>
+              <span>{day.completed ? <Check size={11} strokeWidth={3} /> : null}</span>
             </div>
-          )
-        })}
+          ))}
+        </div>
+      </section>
+
+      <section className="record-section" aria-labelledby="record-title">
+        <div className="section-heading">
+          <h2 id="record-title">今天</h2>
+          <span>{tasks.filter((task) => task.history?.[dateKey()]).length}/{tasks.length}</span>
+        </div>
+        <div className="record-card">
+          {tasks.map((task) => {
+            const done = Boolean(task.history?.[dateKey()])
+            return (
+              <div className="record-item" key={task.id}>
+                <span className={`mini-task-icon tone-${task.type}`}><TaskGlyph type={task.type} size={17} /></span>
+                <span className="record-copy">
+                  <strong>{task.title}</strong>
+                  <small>{task.detail}</small>
+                </span>
+                <span className={`record-state ${done ? 'is-done' : ''}`}>{done ? '已完成' : '待完成'}</span>
+              </div>
+            )
+          })}
+        </div>
       </section>
     </main>
   )
@@ -173,36 +268,52 @@ function History({ tasks }) {
 function SettingRow({ icon: Icon, label, value, onClick, destructive = false }) {
   return (
     <button className={`setting-row ${destructive ? 'is-destructive' : ''}`} type="button" onClick={onClick}>
-      <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
-      <span>{label}</span>
-      <small>{value}</small>
-      <ChevronRight size={17} strokeWidth={1.8} aria-hidden="true" />
+      <span className="setting-icon"><Icon size={19} strokeWidth={2} aria-hidden="true" /></span>
+      <span className="setting-copy">{label}</span>
+      {value ? <small>{value}</small> : null}
+      <ChevronRight size={17} strokeWidth={2} aria-hidden="true" />
     </button>
   )
 }
 
 function Profile({ onInstall, onReset, notify }) {
   return (
-    <main id="main-content" className="page">
-      <header className="page-heading compact-heading">
-        <p>账户与连接</p>
+    <main id="main-content" className="app-page profile-page">
+      <header className="simple-header">
+        <p>账户与偏好</p>
         <h1>我的</h1>
       </header>
 
-      <section className="plain-section setting-section" aria-label="账户设置">
-        <SettingRow icon={WalletCards} label="微信支付" value="待开通" onClick={() => notify('绑定将在微信小程序内完成')} />
-        <SettingRow icon={RefreshCw} label="完成判定" value="一键确认" onClick={() => notify('原生 App 将接入 Apple 健康与 Health Connect')} />
-        <SettingRow icon={Smartphone} label="快速打开" value="安装到桌面" onClick={onInstall} />
+      <section className="identity-card" aria-label="当前账户">
+        <span className="app-avatar">约</span>
+        <span>
+          <strong>约己用户</strong>
+          <small>数据保存在当前设备</small>
+        </span>
+        <span className="identity-status">未登录</span>
       </section>
 
-      <section className="plain-section about-section" aria-labelledby="about-title">
-        <h2 id="about-title">约己</h2>
-        <p>把目标缩成今天的一件事。做完就结束，不做多余的事。</p>
+      <section className="settings-group" aria-labelledby="connection-title">
+        <h2 id="connection-title">连接</h2>
+        <div className="settings-card">
+          <SettingRow icon={WalletCards} label="微信支付" value="待开通" onClick={() => notify('绑定将在微信小程序内完成')} />
+          <SettingRow icon={RefreshCw} label="完成判定" value="一键确认" onClick={() => notify('原生 App 将接入健康数据自动判定')} />
+          <SettingRow icon={Smartphone} label="安装到手机" value="去安装" onClick={onInstall} />
+        </div>
       </section>
 
-      <section className="plain-section setting-section last-section" aria-label="数据设置">
-        <SettingRow icon={Trash2} label="清空本机记录" value="" onClick={onReset} destructive />
+      <section className="settings-group" aria-labelledby="data-title">
+        <h2 id="data-title">数据</h2>
+        <div className="settings-card">
+          <SettingRow icon={Trash2} label="清空本机记录" value="" onClick={onReset} destructive />
+        </div>
       </section>
+
+      <footer className="app-footer">
+        <span className="footer-mark">约</span>
+        <p>约己 · 把今天做好</p>
+        <small>Version 0.2</small>
+      </footer>
     </main>
   )
 }
@@ -212,21 +323,26 @@ function AddSheet({ onClose, onSelect }) {
     <div className="sheet-layer" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <section className="sheet" role="dialog" aria-modal="true" aria-labelledby="add-title">
         <div className="sheet-handle" />
-        <button className="icon-button sheet-close" type="button" aria-label="关闭" onClick={onClose}><X size={20} /></button>
-        <p>不用填写</p>
-        <h2 id="add-title">加一件事</h2>
-        <div className="preset-list">
+        <div className="sheet-heading">
+          <div>
+            <p>选择一个模板</p>
+            <h2 id="add-title">添加约定</h2>
+          </div>
+          <button className="close-button" type="button" aria-label="关闭" onClick={onClose}><X size={20} /></button>
+        </div>
+        <div className="preset-stack">
           {PRESETS.map((preset) => (
-            <button key={preset.type} type="button" onClick={() => onSelect(preset)}>
+            <button className={`preset-card tone-${preset.type}`} key={preset.type} type="button" onClick={() => onSelect(preset)}>
               <span className="preset-icon"><TaskGlyph type={preset.type} /></span>
-              <span>
+              <span className="preset-copy">
                 <strong>{preset.title}</strong>
-                <small>{preset.detail} · ¥{preset.stake.toFixed(1)}</small>
+                <small>{preset.detail} · 承诺 ¥{preset.stake.toFixed(1)}</small>
               </span>
-              <Plus size={18} />
+              <span className="preset-add"><Plus size={18} /></span>
             </button>
           ))}
         </div>
+        <p className="sheet-note">选择后立即加入今天，不需要填写表单。</p>
       </section>
     </div>
   )
@@ -281,10 +397,10 @@ export default function App() {
   const addPreset = (preset) => {
     const existing = tasks.find((task) => task.type === preset.type)
     if (existing) {
-      notify('这件事已经在今天了')
+      notify('这项约定已经添加了')
     } else {
       setTasks((current) => [...current, { ...preset, id: `${preset.type}-${Date.now()}`, history: {} }])
-      notify('已加入今天')
+      notify('已加入今日约定')
     }
     setShowAdd(false)
   }
@@ -309,12 +425,14 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="app-frame">
-        <header className="brand-bar">
-          <a href="./" aria-label="约己首页">约己</a>
-          <span>YUEJI</span>
-        </header>
-
-        {active === 'today' && <Today tasks={tasks} onToggle={toggleTask} onAdd={() => setShowAdd(true)} />}
+        {active === 'today' && (
+          <Today
+            tasks={tasks}
+            onToggle={toggleTask}
+            onAdd={() => setShowAdd(true)}
+            onProfile={() => setActive('profile')}
+          />
+        )}
         {active === 'history' && <History tasks={tasks} />}
         {active === 'profile' && <Profile onInstall={installApp} onReset={reset} notify={notify} />}
 
@@ -329,7 +447,7 @@ export default function App() {
                 aria-current={active === item.id ? 'page' : undefined}
                 onClick={() => setActive(item.id)}
               >
-                <Icon size={21} strokeWidth={active === item.id ? 2.2 : 1.7} />
+                <span className="nav-icon"><Icon size={21} strokeWidth={active === item.id ? 2.4 : 1.9} /></span>
                 <span>{item.label}</span>
               </button>
             )
