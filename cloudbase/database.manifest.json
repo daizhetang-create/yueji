@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "collections": [
+    {
+      "name": "users",
+      "description": "微信用户与状态",
+      "indexes": [{ "name": "status_updated", "fields": [{ "field": "status", "order": "asc" }, { "field": "updatedAt", "order": "desc" }] }]
+    },
+    {
+      "name": "plans",
+      "description": "七日约，只有支付回调确认后才能写入 active",
+      "indexes": [
+        { "name": "openid_state_created", "fields": [{ "field": "openid", "order": "asc" }, { "field": "state", "order": "asc" }, { "field": "createdAt", "order": "desc" }]},
+        { "name": "outTradeNo_unique", "unique": true, "fields": [{ "field": "outTradeNo", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "checkins",
+      "description": "每日打卡，文档 ID 由 openid+日期+任务类型组成",
+      "indexes": [
+        { "name": "openid_date", "fields": [{ "field": "openid", "order": "asc" }, { "field": "date", "order": "asc" }]},
+        { "name": "plan_date", "fields": [{ "field": "planId", "order": "asc" }, { "field": "date", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "orders",
+      "description": "微信支付订单，金额单位均为分",
+      "indexes": [
+        { "name": "outTradeNo_unique", "unique": true, "fields": [{ "field": "outTradeNo", "order": "asc" }]},
+        { "name": "openid_state", "fields": [{ "field": "openid", "order": "asc" }, { "field": "state", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "settlements",
+      "description": "计划到期结算与退款状态",
+      "indexes": [
+        { "name": "planId_unique", "unique": true, "fields": [{ "field": "planId", "order": "asc" }]},
+        { "name": "state_dueAt", "fields": [{ "field": "state", "order": "asc" }, { "field": "dueAt", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "audit_logs",
+      "description": "支付、打卡、结算关键操作审计",
+      "indexes": [{ "name": "entity_created", "fields": [{ "field": "entityId", "order": "asc" }, { "field": "createdAt", "order": "desc" }] }]
+    }
+  ],
+  "security": "所有集合默认仅云函数可读写；小程序端不直接访问数据库"
+}

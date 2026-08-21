@@ -1,22 +1,29 @@
 <view class="page">
   <text class="eyebrow">最近 7 天</text>
   <text class="title">记录</text>
-  <text class="summary">{{completeDays}} 天全部完成</text>
 
-  <view class="week">
-    <view class="day {{item.full ? 'full' : ''}}" wx:for="{{days}}" wx:key="key">
-      <text>周{{item.weekday}}</text>
-      <strong>{{item.day}}</strong>
-      <text class="day-count">{{item.completed || '·'}}</text>
+  <view class="stat-grid">
+    <view class="stat-card accent"><text>完成率</text><text class="stat-value">{{completionRate}}<text class="stat-unit">%</text></text><text>最近七天</text></view>
+    <view class="stat-card"><text>完整天数</text><text class="stat-value">{{completeDays}}<text class="stat-unit">天</text></text><text>当天全部完成</text></view>
+  </view>
+
+  <view class="calendar-card surface-card">
+    <view class="calendar-head"><text>本周</text><text>最近 7 天</text></view>
+    <view class="week">
+      <view class="day {{item.full ? 'full' : ''}}" wx:for="{{days}}" wx:key="key">
+        <text>{{item.weekday}}</text>
+        <text class="day-number">{{item.day}}</text>
+        <text class="day-count">{{item.completed || '·'}}</text>
+      </view>
     </view>
   </view>
 
-  <view class="today-list">
-    <text class="section-label">今天</text>
+  <view class="section-head"><text>今天</text><text>{{todayDone}} / {{tasks.length}}</text></view>
+  <view class="today-list surface-card">
     <view class="record" wx:for="{{tasks}}" wx:key="id">
       <view class="dot {{item.done ? 'done' : ''}}"></view>
       <text>{{item.title}}</text>
-      <text class="record-status">{{item.done ? '完成' : '未完成'}}</text>
+      <text class="record-status {{item.done ? 'done' : ''}}">{{item.done ? '已完成' : '待完成'}}</text>
     </view>
   </view>
 </view>

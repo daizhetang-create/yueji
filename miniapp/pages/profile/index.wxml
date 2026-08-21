@@ -1,22 +1,40 @@
 <view class="page">
-  <text class="eyebrow">账户与连接</text>
+  <text class="eyebrow">账户与偏好</text>
   <text class="title">我的</text>
 
-  <view class="settings">
-    <button bindtap="bindPayment" loading="{{paying}}">
-      <text>微信支付</text>
-      <text class="setting-value">支付 7 天承诺金</text>
+  <view class="identity-card">
+    <view class="avatar">约</view>
+    <view><text>约己用户</text><text>{{cloudReady ? '数据已连接云端' : '数据暂存当前设备'}}</text></view>
+    <text>{{cloudReady ? '已连接' : '未连接'}}</text>
+  </view>
+
+  <text class="group-label">计划</text>
+  <view class="settings surface-card">
+    <button bindtap="openPlan">
+      <view class="setting-icon accent">¥</view>
+      <view><text>七日约</text><text class="setting-value">{{planLabel}}</text></view>
       <text>›</text>
     </button>
     <button bindtap="showSync">
-      <text>完成判定</text>
-      <text class="setting-value">一键确认</text>
+      <view class="setting-icon">↻</view>
+      <view><text>完成判定</text><text class="setting-value">一键确认</text></view>
+      <text>›</text>
+    </button>
+    <button bindtap="showCloud">
+      <view class="setting-icon">☁</view>
+      <view><text>云同步</text><text class="setting-value">{{cloudReady ? '已连接' : '待开通'}}</text></view>
       <text>›</text>
     </button>
   </view>
 
-  <view class="about">
-    <strong>约己</strong>
-    <text>把目标缩成今天的一件事。做完就结束，不做多余的事。</text>
+  <text class="group-label">数据</text>
+  <view class="settings surface-card danger-group">
+    <button bindtap="clearLocal">
+      <view class="setting-icon danger">×</view>
+      <view><text>清空本机记录</text><text class="setting-value">不影响云端</text></view>
+      <text>›</text>
+    </button>
   </view>
+
+  <view class="about"><view>约</view><text>约己 · 把今天做好</text><text>Mini Program 0.2</text></view>
 </view>

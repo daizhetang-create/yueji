@@ -1,11 +1,7 @@
 const COMMITMENTS = new Map([
-  ['starter-seven-days', {
-    id: 'starter-seven-days',
-    description: '约己 7 天承诺金',
-    days: 7,
-    dailyStakeFen: 990,
-    depositFen: 6930,
-  }],
+  ['seven-day-light', { id: 'seven-day-light', level: 'light', description: '约己七日约 · 轻约', days: 7, depositFen: 990 }],
+  ['seven-day-steady', { id: 'seven-day-steady', level: 'steady', description: '约己七日约 · 认真约', days: 7, depositFen: 1990 }],
+  ['seven-day-strong', { id: 'seven-day-strong', level: 'strong', description: '约己七日约 · 强约', days: 7, depositFen: 2990 }],
 ])
 
 const orders = new Map()

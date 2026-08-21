@@ -2,7 +2,9 @@
   "appid": "请替换为已认证的小程序AppID",
   "projectname": "yueji",
   "miniprogramRoot": "./",
+  "cloudfunctionRoot": "../cloudfunctions/",
   "compileType": "miniprogram",
+  "libVersion": "3.15.2",
   "setting": {
     "es6": true,
     "enhance": true,

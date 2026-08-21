@@ -1,6 +1,7 @@
 import { createServer } from 'node:http'
 import { randomBytes } from 'node:crypto'
 import { getCommitment, getOrder, markOrderPaid, markOrderRefunded, rememberOrder } from './commitments.mjs'
+import { calculateSettlement } from './settlement.mjs'
 import { createDepositPayment, refundDeposit, verifyAndDecryptNotification } from './wechatpay.mjs'
 
 const port = Number(process.env.PORT || 8787)
@@ -70,7 +71,7 @@ const server = createServer(async (request, response) => {
         state: 'NOTPAY',
         createdAt: new Date().toISOString(),
       })
-      return json(response, 200, payment)
+      return json(response, 200, { ...payment, outTradeNo })
     }
 
     if (request.method === 'POST' && request.url === '/api/wechat/pay/notify') {
@@ -93,8 +94,13 @@ const server = createServer(async (request, response) => {
       const body = JSON.parse(await readBody(request))
       const order = getOrder(body.outTradeNo)
       if (!order || order.state !== 'PAID') return json(response, 404, { error: '已支付订单不存在' })
-      const result = await refundDeposit({ order, refundFen: body.refundFen })
-      return json(response, 200, result)
+      const settlement = calculateSettlement({
+        depositFen: order.totalFen,
+        completedCount: body.completedCount,
+        targetCount: body.targetCount,
+      })
+      const result = await refundDeposit({ order, refundFen: settlement.refundFen })
+      return json(response, 200, { settlement, refund: result })
     }
 
     return json(response, 404, { error: 'Not found' })

@@ -6,5 +6,6 @@ dist/
 .env.*
 !.env.example
 miniapp/project.config.json
+miniapp/project.private.config.json
 *.pem
 *.key

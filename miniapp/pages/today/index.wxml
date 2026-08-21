@@ -1,37 +1,60 @@
 <view class="page">
-  <view class="heading">
-    <text class="eyebrow">{{dateText}}</text>
-    <text class="title">今天</text>
-    <text class="summary">{{completed}} / {{tasks.length}} 已完成</text>
+  <text class="eyebrow">{{dateText}}</text>
+  <text class="title">{{greeting}}</text>
+
+  <view class="plan-card" wx:if="{{plan}}">
+    <view class="plan-topline">
+      <text>七日约 · {{plan.levelName}}</text>
+      <text>{{plan.completedCount}} / {{plan.targetCount}}</text>
+    </view>
+    <text class="plan-value">已拿回 ¥{{plan.earned}}</text>
+    <text class="plan-sub">{{plan.trackTitle}} · 还有 ¥{{plan.remaining}} 等你拿回</text>
+    <view class="progress-track"><view style="width: {{plan.percent}}%"></view></view>
   </view>
 
-  <view class="rule-list">
-    <button class="task-row {{item.done ? 'done' : ''}}" wx:for="{{tasks}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleTask">
-      <view class="check">{{item.done ? '✓' : ''}}</view>
+  <button class="plan-card plan-empty" wx:else bindtap="openPlan">
+    <view>
+      <text class="plan-kicker">七天，只约一件事</text>
+      <text class="plan-value">开始一个七日约</text>
+      <text class="plan-sub">¥9.9 起 · 完成多少，拿回多少</text>
+    </view>
+    <text class="plan-arrow">↗</text>
+  </button>
+
+  <view class="section-head">
+    <text>今日约定</text>
+    <text>{{completed}} / {{tasks.length}}</text>
+  </view>
+
+  <view class="task-list">
+    <button class="task-card {{item.done ? 'done' : ''}}" wx:for="{{tasks}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleTask">
+      <view class="task-icon tone-{{item.tone}}">{{item.glyph}}</view>
       <view class="task-copy">
         <text class="task-title">{{item.title}}</text>
-        <text class="task-detail">{{item.detail}} · 承诺额 ¥{{item.stake}}</text>
+        <text class="task-detail">{{item.detail}}</text>
       </view>
-      <text class="task-mark">{{item.type === 'meditation' ? '○' : item.type === 'workout' ? '↗' : '☾'}}</text>
+      <view class="check">{{item.done ? '✓' : ''}}</view>
     </button>
   </view>
 
-  <button class="add-button" bindtap="openPresets">＋ 加一件事</button>
-  <text class="note">做完后点一下。原生 App 上线后由健康数据自动完成。</text>
+  <button class="floating-add" bindtap="openPresets" aria-label="添加约定">＋</button>
 </view>
 
 <view class="mask" wx:if="{{showPresets}}" bindtap="closePresets">
   <view class="sheet" catchtap="stopPropagation">
-    <text class="eyebrow">不用填写</text>
-    <text class="sheet-title">加一件事</text>
+    <view class="sheet-handle"></view>
+    <text class="eyebrow">选择一个模板</text>
+    <text class="sheet-title">添加约定</text>
     <view class="preset-list">
-      <button wx:for="{{presets}}" wx:key="type" data-index="{{index}}" bindtap="addPreset">
+      <button class="preset-card" wx:for="{{presets}}" wx:key="type" data-index="{{index}}" bindtap="addPreset">
+        <view class="task-icon tone-{{item.tone}}">{{item.glyph}}</view>
         <view>
           <text>{{item.title}}</text>
-          <text class="preset-detail">{{item.detail}} · ¥{{item.stake}}</text>
+          <text class="preset-detail">{{item.detail}}</text>
         </view>
         <text>＋</text>
       </button>
     </view>
+    <text class="sheet-note">选择后立即加入今天，不需要填写表单。</text>
   </view>
 </view>

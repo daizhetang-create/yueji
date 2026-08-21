@@ -1,0 +1,34 @@
+<view class="page plan-page">
+  <text class="eyebrow">只做一个决定</text>
+  <text class="title">七天，约一件事</text>
+  <text class="summary">不追求每天完美。先选一个足够具体、能做到的动作。</text>
+
+  <view class="section-head"><text>选一件事</text><text>1 / 2</text></view>
+  <view class="track-list">
+    <button class="track-card {{trackId === item.id ? 'selected' : ''}}" wx:for="{{tracks}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseTrack">
+      <view class="track-icon tone-{{item.tone}}">{{item.glyph}}</view>
+      <view class="track-copy"><text>{{item.title}}</text><text>{{item.schedule}} · {{item.deadline}}</text></view>
+      <view class="radio"><view></view></view>
+    </button>
+  </view>
+
+  <view class="section-head"><text>选承诺金</text><text>2 / 2</text></view>
+  <view class="level-grid">
+    <button class="level-card {{levelId === item.id ? 'selected' : ''}}" wx:for="{{levels}}" wx:key="id" data-id="{{item.id}}" bindtap="chooseLevel">
+      <text class="level-name">{{item.name}}</text>
+      <text class="level-price"><text class="currency">¥</text>{{item.amount}}</text>
+      <text class="level-note">{{item.note}}</text>
+      <text class="recommended" wx:if="{{item.recommended}}">首次推荐</text>
+    </button>
+  </view>
+
+  <view class="settlement-card">
+    <view class="settlement-top"><text>结算预览</text><button bindtap="showRules">规则</button></view>
+    <text class="settlement-copy">先支付 ¥{{summary.amount}}。每完成 1 次，就锁定一份可退金额；七天结束统一原路退回。</text>
+    <view class="settlement-row"><text>每次约拿回</text><text class="settlement-value">约 ¥{{summary.single}}</text></view>
+    <view class="settlement-row"><text>额外自动扣款</text><text class="settlement-value">¥0</text></view>
+  </view>
+
+  <text class="adult-note">继续即表示你已年满 18 岁，并理解未完成份额不会退回。计划不会自动续期。</text>
+  <button class="primary-button pay-button" bindtap="startPlan" loading="{{paying}}" disabled="{{paying}}">微信支付 ¥{{summary.amount}} 并开始</button>
+</view>

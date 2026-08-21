@@ -1,22 +1,31 @@
-.page > text { display: block; }
+.stat-grid { margin-top: 52rpx; display: grid; grid-template-columns: 1fr 1fr; gap: 18rpx; }
+.stat-card { min-height: 220rpx; padding: 30rpx; display: flex; flex-direction: column; border-radius: 38rpx; background: #ffffff; box-shadow: 0 18rpx 48rpx rgba(29, 35, 32, .055); }
+.stat-card.accent { background: #c7ef65; }
+.stat-card > text:first-child { color: #5e655f; font-size: 21rpx; font-weight: 650; }
+.stat-value { margin-top: 30rpx; font-size: 58rpx; font-weight: 760; letter-spacing: -3rpx; }
+.stat-unit { margin-left: 4rpx; font-size: 24rpx; }
+.stat-card > text:last-child { margin-top: auto; color: #777d76; font-size: 19rpx; }
+
+.calendar-card { margin-top: 24rpx; padding: 32rpx 24rpx 30rpx; }
+.calendar-head { display: flex; align-items: center; justify-content: space-between; padding: 0 8rpx 28rpx; }
+.calendar-head text:first-child { font-size: 28rpx; font-weight: 700; }
+.calendar-head text:last-child { color: #777d76; font-size: 20rpx; }
 
 .week {
-  margin-top: 84rpx;
-  padding-bottom: 60rpx;
   display: flex;
-  border-bottom: 2rpx solid #171816;
 }
 
-.day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 18rpx; color: #74766f; }
-.day text { font-size: 19rpx; }
-.day strong { font-size: 27rpx; }
-.day .day-count { width: 44rpx; height: 44rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #f0f1ec; font-size: 20rpx; }
-.day.full { color: #178b4d; }
-.day.full .day-count { background: #178b4d; color: #ffffff; }
-.today-list { margin-top: 68rpx; }
-.section-label { font-size: 25rpx; font-weight: 600; }
-.record { min-height: 112rpx; display: flex; align-items: center; border-bottom: 2rpx solid #e3e4de; font-size: 28rpx; }
+.day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 16rpx; color: #777d76; }
+.day text { font-size: 18rpx; }
+.day-number { font-size: 25rpx; font-weight: 700; }
+.day .day-count { width: 42rpx; height: 42rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eff0eb; font-size: 18rpx; }
+.day.full { color: #1d2320; font-weight: 650; }
+.day.full .day-count { background: #1d2320; color: #c7ef65; }
+.today-list { overflow: hidden; }
+.record { min-height: 116rpx; padding: 0 28rpx; display: flex; align-items: center; border-bottom: 1rpx solid #eef0eb; font-size: 27rpx; }
+.record:last-child { border-bottom: 0; }
 .record > text { flex: 1; margin-left: 24rpx; }
-.record .record-status { color: #74766f; font-size: 23rpx; }
+.record .record-status { flex: 0 0 auto; margin-left: 0; padding: 8rpx 14rpx; border-radius: 18rpx; background: #f0f1ed; color: #777d76; font-size: 19rpx; }
+.record .record-status.done { background: #e1f3eb; color: #348467; }
 .dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #d6d8d1; }
-.dot.done { background: #178b4d; }
+.dot.done { background: #54ae8b; }

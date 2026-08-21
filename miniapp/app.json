@@ -1,20 +1,21 @@
 {
   "pages": [
     "pages/today/index",
+    "pages/plan/index",
     "pages/history/index",
     "pages/profile/index"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#f3f2ed",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "约己",
-    "backgroundColor": "#f5f5f1",
+    "backgroundColor": "#f3f2ed",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
-    "color": "#94978f",
-    "selectedColor": "#171816",
-    "backgroundColor": "#ffffff",
+    "color": "#8b918a",
+    "selectedColor": "#1d2320",
+    "backgroundColor": "#fafaf7",
     "borderStyle": "white",
     "list": [
       { "pagePath": "pages/today/index", "text": "今天" },
@@ -22,6 +23,7 @@
       { "pagePath": "pages/profile/index", "text": "我的" }
     ]
   },
+  "lazyCodeLoading": "requiredComponents",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

@@ -1,0 +1,48 @@
+.plan-page { padding-bottom: 70rpx; }
+.summary { max-width: 610rpx; line-height: 1.65; }
+.track-list { display: grid; gap: 18rpx; }
+.track-card {
+  min-height: 136rpx;
+  margin: 0;
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  border: 2rpx solid transparent;
+  border-radius: 32rpx;
+  background: #ffffff;
+  box-shadow: 0 16rpx 44rpx rgba(29, 35, 32, .05);
+  text-align: left;
+}
+.track-card.selected { border-color: #1d2320; }
+.track-icon { width: 84rpx; height: 84rpx; flex: 0 0 84rpx; display: flex; align-items: center; justify-content: center; border-radius: 26rpx; font-size: 36rpx; font-weight: 700; }
+.tone-meditation { background: #eeeafc; color: #6557b4; }
+.tone-workout { background: #ffe8dc; color: #d96842; }
+.tone-sleep { background: #e1edf8; color: #3975a6; }
+.track-copy { flex: 1; }
+.track-copy text { display: block; }
+.track-copy text:first-child { font-size: 29rpx; font-weight: 680; }
+.track-copy text:last-child { margin-top: 14rpx; color: #777d76; font-size: 20rpx; }
+.radio { width: 38rpx; height: 38rpx; display: flex; align-items: center; justify-content: center; border: 2rpx solid #c3c7c1; border-radius: 50%; }
+.track-card.selected .radio { border-color: #1d2320; }
+.track-card.selected .radio view { width: 22rpx; height: 22rpx; border-radius: 50%; background: #c7ef65; }
+
+.level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14rpx; }
+.level-card { position: relative; min-height: 210rpx; margin: 0; padding: 26rpx 18rpx 20rpx; display: flex; flex-direction: column; align-items: flex-start; border: 2rpx solid transparent; border-radius: 30rpx; background: #ffffff; box-shadow: 0 14rpx 38rpx rgba(29, 35, 32, .045); text-align: left; }
+.level-card.selected { border-color: #1d2320; background: #f9ffe9; }
+.level-card text { display: block; }
+.level-name { font-size: 22rpx; font-weight: 680; }
+.level-price { margin-top: 22rpx; font-size: 40rpx; font-weight: 760; letter-spacing: -2rpx; }
+.currency { margin-right: 3rpx; font-size: 21rpx; }
+.level-note { margin-top: auto; color: #777d76; font-size: 18rpx; line-height: 1.35; }
+.recommended { position: absolute; top: -14rpx; right: 10rpx; padding: 6rpx 12rpx; border-radius: 12rpx; background: #1d2320; color: #c7ef65; font-size: 16rpx; }
+
+.settlement-card { margin-top: 40rpx; padding: 30rpx; border-radius: 34rpx; background: #1d2320; color: #ffffff; }
+.settlement-top { display: flex; align-items: center; justify-content: space-between; }
+.settlement-top > text { font-size: 28rpx; font-weight: 700; }
+.settlement-top button { margin: 0; padding: 8rpx 16rpx; border: 1rpx solid #555d57; border-radius: 16rpx; background: transparent; color: #c7ef65; font-size: 19rpx; line-height: 1; }
+.settlement-copy { display: block; margin: 24rpx 0 26rpx; color: #aeb4ae; font-size: 21rpx; line-height: 1.65; }
+.settlement-row { min-height: 72rpx; display: flex; align-items: center; justify-content: space-between; border-top: 1rpx solid #39403c; font-size: 22rpx; }
+.settlement-value { color: #c7ef65; font-weight: 700; }
+.adult-note { display: block; margin: 30rpx 12rpx 22rpx; color: #777d76; font-size: 19rpx; line-height: 1.55; }
+.pay-button { width: 100%; margin: 0; }
