@@ -4,7 +4,8 @@
 
 - `yueji-data`：用户、计划和打卡数据；只通过云函数访问数据库。
 - CloudBase 集成中心生成的 `pay-common`：微信下单、查单、退款和回调。
-- `users / plans / checkins / orders / settlements / audit_logs`：集合定义见 `database.manifest.json`。
+- `users / plans / checkins / reflections / orders / settlements / audit_logs`：当前可用数据结构。
+- `checkin_events / pool_cycles / pool_entries / reward_payouts`：共同约池真实化之前的预留审计结构；默认不启用真实付款。
 
 ## 当前套餐路线（2026-08-21）
 
@@ -29,7 +30,7 @@ payFunctionName: '集成中心生成的支付函数名',
 ## 部署顺序
 
 1. 用已认证的小程序 AppID 创建或关联 CloudBase 环境。
-2. 创建清单中的 6 个数据库集合和索引，权限全部设为“仅管理员/云函数”。
+2. 创建清单中的数据库集合和索引，权限全部设为“仅管理员/云函数”；至少先创建 `users / plans / checkins / reflections`。
 3. 在微信开发者工具中上传并部署 `cloudfunctions/yueji-data`，选择“云端安装依赖”。
 4. 选择支付路线：标准版可在「模板与集成 → 集成中心」创建“小程序微信支付”；MVP 优先部署自建 `yueji-pay`，避免为连接器过早升级标准版。
 5. 将环境 ID 和实际支付函数名填入 `miniapp/services/config.js`。
@@ -42,3 +43,5 @@ payFunctionName: '集成中心生成的支付函数名',
 - 同一个 `outTradeNo`、支付通知 ID、`planId` 和退款单号都必须幂等。
 - 结算退款金额由服务端根据有效打卡计算；客户端不能提交 `refundFen`。
 - 回调先核对商户号、AppID、订单金额和 OpenID，再更新订单。
+- 本金退款、约池贡献、共同奖励必须三账分开；微信原路退款不能冒充跨用户奖励付款。
+- 共同奖励启用前必须具备不可覆盖打卡事件、完成证据复核、12 小时申诉冻结、持久订单、对账与幂等奖励转出。

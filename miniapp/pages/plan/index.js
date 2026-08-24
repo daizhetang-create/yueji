@@ -1,4 +1,4 @@
-const { TRACKS, LEVELS, money } = require('../../config/plans')
+const { TRACKS, LEVELS, PUBLIC_POOL_DEMO, money } = require('../../config/plans')
 const { fundCommitment } = require('../../services/payment')
 const { enableShareMenu, shareToMessage, shareToTimeline } = require('../../services/share')
 
@@ -42,6 +42,8 @@ Page({
         level,
         single: money(singleFen),
         amount: money(level.amountFen),
+        poolAmount: money(PUBLIC_POOL_DEMO.totalFen),
+        poolRewardEstimate: money(Math.floor(PUBLIC_POOL_DEMO.totalFen / PUBLIC_POOL_DEMO.eligibleCount)),
       },
     })
   },
@@ -49,7 +51,7 @@ Page({
   showRules() {
     wx.showModal({
       title: '承诺金规则',
-      content: '承诺金只支付一次。七天结束后，按完成份额原路退款；未完成部分不退，不会再次扣款，也不会自动续期。支付后 10 分钟内且尚未打卡，可申请全额取消。技术故障可在结算前复核。仅限成年人参与。',
+      content: '承诺金只支付一次。七天结束先按有效完成份额计算个人本金退款；未退份额在未来真实版中拟进入当期共同约池，完整履约且通过复核者等份共享。当前约池仅为机制演示，不发生真实奖励转账。不会再次扣款或自动续期。技术故障与申诉期间冻结结算，仅限成年人参与。',
       showCancel: false,
       confirmText: '我知道了',
     })

@@ -31,6 +31,15 @@ const TRACKS = [
   },
 ]
 
+const PUBLIC_POOL_DEMO = {
+  cycleLabel: '第 01 期',
+  totalFen: 3861,
+  participantCount: 42,
+  eligibleCount: 14,
+  state: 'open',
+  mode: 'public_demo',
+}
+
 const LEVELS = [
   {
     id: 'light',
@@ -69,4 +78,14 @@ function earnedRefundFen(amountFen, completed, targetCount) {
   return Math.floor((amountFen * safeCompleted) / targetCount)
 }
 
-module.exports = { TRACKS, LEVELS, money, earnedRefundFen }
+function poolPreview(amountFen, completed, targetCount) {
+  const principalRefundFen = earnedRefundFen(amountFen, completed, targetCount)
+  return {
+    principalRefundFen,
+    poolContributionFen: amountFen - principalRefundFen,
+    eligible: completed >= targetCount,
+    estimatedRewardFen: Math.floor(PUBLIC_POOL_DEMO.totalFen / Math.max(1, PUBLIC_POOL_DEMO.eligibleCount)),
+  }
+}
+
+module.exports = { TRACKS, LEVELS, PUBLIC_POOL_DEMO, money, earnedRefundFen, poolPreview }

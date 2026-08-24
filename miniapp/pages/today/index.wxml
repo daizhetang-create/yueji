@@ -7,18 +7,28 @@
       <text>七日约 · {{plan.levelName}}</text>
       <text>{{plan.completedCount}} / {{plan.targetCount}}</text>
     </view>
-    <text class="plan-value">已拿回 ¥{{plan.earned}}</text>
-    <text class="plan-sub">{{plan.trackTitle}} · 还有 ¥{{plan.remaining}} 等你拿回</text>
+    <text class="plan-value">预计退回 ¥{{plan.principalRefund}}</text>
+    <text class="plan-sub">{{plan.trackTitle}} · 未完成份额 ¥{{plan.poolContribution}}</text>
     <view class="progress-track"><view style="width: {{plan.percent}}%"></view></view>
+    <view class="pool-link" catchtap="openPool">
+      <view><text>共同约池</text><text>机制演示</text></view>
+      <text>¥{{pool.amount}} · {{pool.participantCount}} 人同行 · {{plan.eligibilityText}} ›</text>
+    </view>
   </view>
 
   <button class="plan-card plan-empty" wx:else bindtap="openPlan">
     <view>
       <text class="plan-kicker">七天，只约一件事</text>
       <text class="plan-value">开始一个七日约</text>
-      <text class="plan-sub">¥9.9 起 · 完成多少，拿回多少</text>
+      <text class="plan-sub">¥9.9 起 · 完成份额退回，完整履约共享约池</text>
     </view>
     <text class="plan-arrow">↗</text>
+  </button>
+
+  <button class="pool-standalone" wx:if="{{!plan}}" bindtap="openPool">
+    <view class="pool-mini-icon">约</view>
+    <view><text>共同约池 <text class="demo-tag">机制演示</text></text><text>未完成份额汇成池，完整履约者共享</text></view>
+    <text>›</text>
   </button>
 
   <view class="section-head">
@@ -26,35 +36,91 @@
     <text>{{completed}} / {{tasks.length}}</text>
   </view>
 
-  <view class="task-list">
-    <button class="task-card {{item.done ? 'done' : ''}}" wx:for="{{tasks}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleTask">
-      <view class="task-icon tone-{{item.tone}}">{{item.glyph}}</view>
-      <view class="task-copy">
-        <text class="task-title">{{item.title}}</text>
-        <text class="task-detail">{{item.detail}}</text>
+  <view class="task-list" wx:if="{{tasks.length}}">
+    <view class="task-card {{item.done ? 'done' : ''}}" wx:for="{{tasks}}" wx:key="id">
+      <button class="task-main" data-id="{{item.id}}" bindtap="toggleTask">
+        <view class="task-icon tone-{{item.tone}}">{{item.glyph}}</view>
+        <view class="task-copy">
+          <text class="task-title">{{item.title}}</text>
+          <view class="task-detail"><text>{{item.deadline}} 前</text><text>{{item.schedule}}</text><text class="validation-tag" wx:if="{{item.mode === 'validation'}}">验证</text></view>
+        </view>
+        <view class="check">{{item.done ? '✓' : ''}}</view>
+      </button>
+      <view class="task-actions">
+        <button data-id="{{item.id}}" bindtap="openEditor">编辑</button>
+        <button wx:if="{{item.done}}" data-id="{{item.id}}" bindtap="openNote">{{item.hasNote ? '已记录' : '记一下'}}</button>
       </view>
-      <view class="check">{{item.done ? '✓' : ''}}</view>
-    </button>
+    </view>
   </view>
 
+  <button class="empty-day" wx:else bindtap="openPresets"><text>今天留白</text><text>需要时，再加一件真正想做的事</text></button>
   <button class="floating-add" bindtap="openPresets" aria-label="添加约定">＋</button>
 </view>
 
 <view class="mask" wx:if="{{showPresets}}" bindtap="closePresets">
   <view class="sheet" catchtap="stopPropagation">
     <view class="sheet-handle"></view>
-    <text class="eyebrow">选择一个模板</text>
+    <text class="eyebrow">{{validationMode ? '七天验证 · 不进入共同约池' : '默认都是确定要做的事'}}</text>
     <text class="sheet-title">添加约定</text>
     <view class="preset-list">
       <button class="preset-card" wx:for="{{presets}}" wx:key="type" data-index="{{index}}" bindtap="addPreset">
         <view class="task-icon tone-{{item.tone}}">{{item.glyph}}</view>
-        <view>
-          <text>{{item.title}}</text>
-          <text class="preset-detail">{{item.detail}}</text>
-        </view>
+        <view><text>{{item.title}}</text><text class="preset-detail">{{item.deadline}} 前</text></view>
         <text>＋</text>
       </button>
     </view>
-    <text class="sheet-note">选择后立即加入今天，不需要填写表单。</text>
+    <button class="custom-task-button" bindtap="openCustom">自定义约定</button>
+    <button class="validation-link {{validationMode ? 'active' : ''}}" bindtap="toggleValidation">{{validationMode ? '已设为验证；点此恢复普通约定' : '还没确定？把它作为七天验证 ›'}}</button>
+    <text class="sheet-note">添加后可随时编辑截止时间和每周出现日。验证目标不参与共同约池。</text>
+  </view>
+</view>
+
+<view class="mask" wx:if="{{showEditor}}" bindtap="closeEditor">
+  <view class="sheet editor-sheet" catchtap="stopPropagation">
+    <view class="sheet-handle"></view>
+    <text class="eyebrow">{{editor.id ? '修改只影响之后的安排' : '自由设置'}}</text>
+    <text class="sheet-title">{{editor.id ? '编辑约定' : '自定义约定'}}</text>
+    <view class="field"><text>名称</text><input value="{{editor.title}}" maxlength="30" bindinput="editorTitle" /></view>
+    <view class="field"><text>截止时间</text><picker mode="time" value="{{editor.deadline}}" bindchange="editorDeadline"><view class="picker-value">{{editor.deadline}} <text>›</text></view></picker></view>
+    <view class="field"><text>每周出现日</text><view class="weekday-grid"><button class="{{item.selected ? 'selected' : ''}}" wx:for="{{editorDays}}" wx:key="value" data-value="{{item.value}}" bindtap="toggleEditorDay">{{item.label}}</button></view></view>
+    <button class="primary-button save-button" bindtap="saveEditor">保存约定</button>
+    <button class="delete-button" wx:if="{{editor.id}}" bindtap="deleteEditor">删除这项约定</button>
+  </view>
+</view>
+
+<view class="mask" wx:if="{{showNote}}" bindtap="closeNote">
+  <view class="sheet note-sheet" catchtap="stopPropagation">
+    <view class="sheet-handle"></view>
+    <text class="eyebrow">主动记录，不影响结算</text>
+    <text class="sheet-title">实践随记</text>
+    <text class="note-task">{{noteTaskTitle}}</text>
+    <view class="rating-row"><button class="{{noteRating >= item ? 'selected' : ''}}" wx:for="{{ratings}}" wx:key="*this" data-value="{{item}}" bindtap="chooseRating">☆</button></view>
+    <view class="field"><text>想记再记</text><textarea value="{{noteText}}" maxlength="180" placeholder="一句话也可以；留空也没关系" bindinput="noteInput"></textarea></view>
+    <button class="primary-button save-button" bindtap="saveNote">保存随记</button>
+  </view>
+</view>
+
+<view class="mask" wx:if="{{showPool}}" bindtap="closePool">
+  <view class="sheet pool-sheet" catchtap="stopPropagation">
+    <view class="sheet-handle"></view>
+    <text class="eyebrow">{{pool.cycleLabel}} · 规则预演</text>
+    <text class="sheet-title">共同约池</text>
+    <view class="demo-banner"><text>盾</text><view><text>机制演示</text><text>当前不发生真实奖励转账</text></view></view>
+    <view class="pool-balance"><text>本期模拟约池</text><text>¥{{pool.amount}}</text><text>{{pool.participantCount}} 人参与 · {{pool.eligibleCount}} 人完整履约</text></view>
+    <view class="personal-formula" wx:if="{{plan}}">
+      <text>你的演示账本</text>
+      <text>承诺金 → 完成 {{plan.completedCount}}/{{plan.targetCount}} → 预计退回 ¥{{plan.principalRefund}}</text>
+      <text>未完成份额 ¥{{plan.poolContribution}} → 进入共同约池</text>
+      <text>{{plan.eligible ? '已获得共享资格 · 当前估算 ¥' + plan.poolRewardEstimate : plan.eligibilityText + '，获得共享资格'}}</text>
+    </view>
+    <view class="pool-rules">
+      <view><text>01</text><view><text>先守住自己的本金</text><text>按有效完成份额计算个人预计退回。</text></view></view>
+      <view><text>02</text><view><text>未完成份额形成约池</text><text>个人账本与共同奖励账本始终分开。</text></view></view>
+      <view><text>03</text><view><text>完整履约者等份共享</text><text>须无争议且通过完成证据复核；余分冻结待处理。</text></view></view>
+    </view>
+    <text class="pool-guardrail">约己奖励认真，不奖励下注。没有排行榜、倒计时、随机抽奖或翻倍刺激。</text>
+    <button class="primary-button save-button" wx:if="{{!plan}}" bindtap="openPlan">去开始七日约</button>
+    <button class="secondary-button" wx:if="{{plan && !plan.pauseUsed}}" bindtap="usePause">今天有事，使用本期一次暂缓</button>
+    <text class="pause-used" wx:if="{{plan && plan.pauseUsed}}">本期暂缓已使用 · 目标次数不减少，截止日顺延一天</text>
   </view>
 </view>

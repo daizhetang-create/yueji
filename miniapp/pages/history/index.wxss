@@ -24,7 +24,9 @@
 .today-list { overflow: hidden; }
 .record { min-height: 116rpx; padding: 0 28rpx; display: flex; align-items: center; border-bottom: 1rpx solid #eef0eb; font-size: 27rpx; }
 .record:last-child { border-bottom: 0; }
-.record > text { flex: 1; margin-left: 24rpx; }
+.record-copy { flex: 1; min-width: 0; margin-left: 24rpx; }
+.record-copy text:first-child { overflow: hidden; font-size: 27rpx; text-overflow: ellipsis; white-space: nowrap; }
+.record-copy text:last-child { display: block; margin-top: 8rpx; color: #777d76; font-size: 18rpx; }
 .record .record-status { flex: 0 0 auto; margin-left: 0; padding: 8rpx 14rpx; border-radius: 18rpx; background: #f0f1ed; color: #777d76; font-size: 19rpx; }
 .record .record-status.done { background: #e1f3eb; color: #348467; }
 .dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #d6d8d1; }

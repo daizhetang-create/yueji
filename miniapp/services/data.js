@@ -22,9 +22,14 @@ async function pullState() {
   return result && result.ok ? result : null
 }
 
-async function syncCheckIn({ taskType, date, done, planId }) {
-  const result = await callData('checkIn', { taskType, date, done, planId: planId || '' })
+async function syncCheckIn({ taskId, taskType, date, done, planId }) {
+  const result = await callData('checkIn', { taskId, taskType, date, done, planId: planId || '' })
   return result && result.ok ? result : null
 }
 
-module.exports = { enabled, pullState, syncCheckIn }
+async function syncReflection({ taskId, taskType, date, rating, text }) {
+  const result = await callData('saveReflection', { taskId, taskType, date, rating, text })
+  return result && result.ok ? result : null
+}
+
+module.exports = { enabled, pullState, syncCheckIn, syncReflection }

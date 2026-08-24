@@ -10,6 +10,11 @@
 
   <text class="group-label">计划</text>
   <view class="settings surface-card">
+    <button bindtap="showPoolRules">
+      <view class="setting-icon accent">约</view>
+      <view><text>共同约池</text><text class="setting-value">机制演示</text></view>
+      <text>›</text>
+    </button>
     <button bindtap="openPlan">
       <view class="setting-icon accent">¥</view>
       <view><text>七日约</text><text class="setting-value">{{planLabel}}</text></view>
@@ -36,5 +41,5 @@
     </button>
   </view>
 
-  <view class="about"><view>约</view><text>约己 · 把今天做好</text><text>Mini Program 0.2</text></view>
+  <view class="about"><view>约</view><text>约己 · 把今天做好</text><text>Mini Program 0.3.0 · 共同约池演示</text></view>
 </view>

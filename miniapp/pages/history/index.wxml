@@ -22,7 +22,7 @@
   <view class="today-list surface-card">
     <view class="record" wx:for="{{tasks}}" wx:key="id">
       <view class="dot {{item.done ? 'done' : ''}}"></view>
-      <text>{{item.title}}</text>
+      <view class="record-copy"><text>{{item.title}}</text><text wx:if="{{item.hasNote}}">今天有一条实践随记</text></view>
       <text class="record-status {{item.done ? 'done' : ''}}">{{item.done ? '已完成' : '待完成'}}</text>
     </view>
   </view>

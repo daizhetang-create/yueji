@@ -1,4 +1,4 @@
-const CACHE = 'yueji-shell-v2'
+const CACHE = 'yueji-shell-v3'
 const SCOPE = new URL(self.registration.scope).pathname
 const SHELL = [SCOPE, `${SCOPE}manifest.webmanifest`, `${SCOPE}yueji-mark.svg`]
 

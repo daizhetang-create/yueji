@@ -23,6 +23,22 @@
       ]
     },
     {
+      "name": "reflections",
+      "description": "用户主动创建的实践随记；不参与完成或资金判定",
+      "indexes": [
+        { "name": "openid_date", "fields": [{ "field": "openid", "order": "asc" }, { "field": "date", "order": "asc" }]},
+        { "name": "task_date", "fields": [{ "field": "taskId", "order": "asc" }, { "field": "date", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "checkin_events",
+      "description": "真实约池上线前启用的不可覆盖打卡事件与验证结果",
+      "indexes": [
+        { "name": "plan_created", "fields": [{ "field": "planId", "order": "asc" }, { "field": "createdAt", "order": "asc" }]},
+        { "name": "openid_created", "fields": [{ "field": "openid", "order": "asc" }, { "field": "createdAt", "order": "desc" }]}
+      ]
+    },
+    {
       "name": "orders",
       "description": "微信支付订单，金额单位均为分",
       "indexes": [
@@ -32,10 +48,34 @@
     },
     {
       "name": "settlements",
-      "description": "计划到期结算与退款状态",
+      "description": "计划到期结算；本金退款、约池贡献与共同奖励分账记录",
       "indexes": [
         { "name": "planId_unique", "unique": true, "fields": [{ "field": "planId", "order": "asc" }]},
         { "name": "state_dueAt", "fields": [{ "field": "state", "order": "asc" }, { "field": "dueAt", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "pool_cycles",
+      "description": "共同约池批次；当前只保留机制演示结构，不启用真实转账",
+      "indexes": [
+        { "name": "cycleId_unique", "unique": true, "fields": [{ "field": "cycleId", "order": "asc" }]},
+        { "name": "state_lockedAt", "fields": [{ "field": "state", "order": "asc" }, { "field": "lockedAt", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "pool_entries",
+      "description": "每个计划的本金退回、约池贡献、共享资格与奖励预览",
+      "indexes": [
+        { "name": "planId_unique", "unique": true, "fields": [{ "field": "planId", "order": "asc" }]},
+        { "name": "cycle_eligibility", "fields": [{ "field": "cycleId", "order": "asc" }, { "field": "eligible", "order": "asc" }]}
+      ]
+    },
+    {
+      "name": "reward_payouts",
+      "description": "未来真实共同奖励转出幂等账；合规与支付能力通过前保持禁用",
+      "indexes": [
+        { "name": "payoutNo_unique", "unique": true, "fields": [{ "field": "payoutNo", "order": "asc" }]},
+        { "name": "state_created", "fields": [{ "field": "state", "order": "asc" }, { "field": "createdAt", "order": "asc" }]}
       ]
     },
     {

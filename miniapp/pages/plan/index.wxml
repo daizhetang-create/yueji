@@ -24,11 +24,12 @@
 
   <view class="settlement-card">
     <view class="settlement-top"><text>结算预览</text><button bindtap="showRules">规则</button></view>
-    <text class="settlement-copy">先支付 ¥{{summary.amount}}。每完成 1 次，就锁定一份可退金额；七天结束统一原路退回。</text>
-    <view class="settlement-row"><text>每次约拿回</text><text class="settlement-value">约 ¥{{summary.single}}</text></view>
+    <text class="settlement-copy">先支付 ¥{{summary.amount}}。每完成 1 次，就守住一份可退本金；未完成份额拟进入共同约池，完整履约者共享。</text>
+    <view class="settlement-row"><text>每次约守住本金</text><text class="settlement-value">约 ¥{{summary.single}}</text></view>
+    <view class="settlement-row pool-preview-row"><text>共同约池 <text>机制演示</text></text><text class="settlement-value">本期 ¥{{summary.poolAmount}}</text></view>
     <view class="settlement-row"><text>额外自动扣款</text><text class="settlement-value">¥0</text></view>
   </view>
 
-  <text class="adult-note">继续即表示你已年满 18 岁，并理解未完成份额不会退回。计划不会自动续期。</text>
+  <text class="adult-note">继续即表示你已年满 18 岁，并理解未完成份额不会退回。共同约池目前只是机制演示；自定义与验证目标不进入约池。计划不会自动续期。</text>
   <button class="primary-button pay-button" bindtap="startPlan" loading="{{paying}}" disabled="{{paying}}">微信支付 ¥{{summary.amount}} 并开始</button>
 </view>

@@ -44,5 +44,6 @@
 .settlement-copy { display: block; margin: 24rpx 0 26rpx; color: #aeb4ae; font-size: 21rpx; line-height: 1.65; }
 .settlement-row { min-height: 72rpx; display: flex; align-items: center; justify-content: space-between; border-top: 1rpx solid #39403c; font-size: 22rpx; }
 .settlement-value { color: #c7ef65; font-weight: 700; }
+.pool-preview-row > text:first-child > text { display: inline; margin-left: 8rpx; padding: 4rpx 8rpx; border-radius: 9rpx; background: #343b37; color: #aeb5ad; font-size: 15rpx; }
 .adult-note { display: block; margin: 30rpx 12rpx 22rpx; color: #777d76; font-size: 19rpx; line-height: 1.55; }
 .pay-button { width: 100%; margin: 0; }

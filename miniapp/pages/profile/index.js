@@ -24,6 +24,14 @@ Page({
     wx.navigateTo({ url: '/pages/plan/index' })
   },
 
+  showPoolRules() {
+    wx.showModal({
+      title: '共同约池 · 机制演示',
+      content: '先按完成份额计算个人本金退款；未完成份额拟进入共同约池，完整履约且通过复核者等份共享。当前不发生真实奖励转账。约己不做排行榜、抽奖、翻倍或奖池倒计时。',
+      showCancel: false,
+    })
+  },
+
   showSync() {
     wx.showModal({ title: '完成判定', content: '第一版使用一键确认，速度最快、阻力最低。后续运动接微信步数或 Health Connect，冥想优先接应用内计时，不上传不必要的隐私数据。', showCancel: false })
   },
