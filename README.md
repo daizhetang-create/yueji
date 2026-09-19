@@ -29,6 +29,8 @@
 
 把目标缩成今天的一件事。做完就结束。
 
+![约己今日界面](docs/yueji-home-final.png)
+
 - 主站（Cloudflare）：<https://yueji-e39.pages.dev/>
 - 备用站（GitHub Pages）：<https://daizhetang-create.github.io/yueji/>
 - GitHub：<https://github.com/daizhetang-create/yueji>
