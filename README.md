@@ -24,16 +24,7 @@
 - 真实收款、跨用户奖励、申诉冻结、商户付款和法务/财税审查仍是上线前门槛。
 - 支付服务端代码用于链路演示和测试，不代表已经开放真实支付。
 
----
-# 约己 · YUEJI
-
-把目标缩成今天的一件事。做完就结束。
-
 ![约己今日界面](docs/yueji-home-final.png)
-
-- 主站（Cloudflare）：<https://yueji-e39.pages.dev/>
-- 备用站（GitHub Pages）：<https://daizhetang-create.github.io/yueji/>
-- GitHub：<https://github.com/daizhetang-create/yueji>
 
 ## 当前已经具备
 
